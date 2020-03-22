@@ -26,7 +26,7 @@ echo -e "Задаем hostname/" | tee -a ./$log
 sudo hostnamectl set-hostname $hostname
 hostnamectl status | tee -a ./$log
 #===============================================
-echo -e "\e[32m Удаляем лишнее"
+echo -e "Удаляем лишнее"
 sudo apt purge -y   compiz* \
                     thunderbird* \
                     xfburn \
@@ -39,7 +39,7 @@ sudo apt purge -y   compiz* \
                     rhythmbox-plugins \
                     gnome-orca
 #===============================================
-echo -e "\e[32m Добавляем репозитории"
+echo -e "Добавляем репозитории"
 sudo add-apt-repository -y ppa:graphics-drivers/ppa
 #====
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
@@ -48,7 +48,7 @@ echo "deb https://download.onlyoffice.com/repo/debian squeeze main" >> /etc/apt/
 sudo add-apt-repository ppa:alexlarsson/flatpak
 sudo sed -i 's/false/true/g' /etc/apt/apt.conf.d/00recommends
 #===============================================
-echo -e "\e[32m Скачиваем файлы требуемые для установки"
+echo -e "Скачиваем файлы требуемые для установки"
 wget --output-document freeoffice-x64-2018.deb https://www.freeoffice.com/download.php?filename=https://www.softmaker.net/down/softmaker-freeoffice-2018_974-01_amd64.deb
 wget https://github.com/BeyondTrust/pbis-open/releases/download/9.1.0/pbis-open-9.1.0.551.linux.x86_64.deb.sh
 #Установка
@@ -56,7 +56,7 @@ dpkg -i ./freeoffice-*
 sudo /usr/share/freeoffice2018/add_apt_repo.sh
 sudo sh ./pbis-open-*.sh
 
-echo -e "\e[32m Проверка обновлений и обновение"
+echo -e "Проверка обновлений и обновение"
 sudo apt update --fix-missing &&  sudo apt upgrade -y
 
 #Установка дополнительного ПО
@@ -73,7 +73,7 @@ sudo apt install -f -y mc \
                     samba \
                     screenfetch \
                     openssh-server
-echo -e "\e[32m Настройка пользователя"
+echo -e "Настройка пользователя"
 #Настройка пользователя
 echo "PS1='\[\e[1;31m\][\u@\h \W]\$\[\e[0m\]'" >> /root/.bashrc
 #Настройка zabbix
@@ -90,15 +90,15 @@ sudo /opt/pbis/bin/config UserDomainPrefix corp
 sudo /opt/pbis/bin/config AssumeDefaultDomain True
 sudo /opt/pbis/bin/config LoginShellTemplate /bin/bash
 sudo /opt/pbis/bin/config HomeDirTemplate %H/%D/%U
-echo -e "\e[36m Параметры первого входа на компьютер" | tee -a ./$log
+echo -e "Параметры первого входа на компьютер" | tee -a ./$log
 sudo /opt/pbis/bin/config --dump | tee -a ./$log
 #Добавление SUDO
-echo -e "\e[32m Прописываем группы в SUDO"
+echo -e "Прописываем группы в SUDO"
 sudo echo -n '%local_sudoers ALL=(ALL) ALL' > /etc/sudoers.d/01local_sudoers
 sudo echo -n '%Администраторы^домена ALL=(ALL) ALL' > /etc/sudoers.d/00domaine_admin
 sudo chmod 0600 /etc/sudoers.d/*
 #Ввод в домен
-echo -e "\e[32m Ввод в домен"
+echo -e "Ввод в домен"
 sudo /opt/pbis/bin/domainjoin-cli join corp.npcmr.ru $login $pass
 sudo domainjoin-cli query | tee -a ./$log
 #Настройка apparmor под новый HOME
@@ -117,7 +117,7 @@ sudo sed -i 's/#ClientAliveInterval .*/ClientAliveInterval 300/' /etc/ssh/sshd_c
 sudo sed -i 's/#MaxSessions .*/MaxSessions 2/' /etc/ssh/sshd_config
 sudo sed -i 's/#MaxAuthTries .*/MaxAuthTries 2/' /etc/ssh/sshd_config
 #
-echo -e "\e[32m Настройка uwf" 
+echo -e "Настройка uwf" 
 ufw allow from 172.17.101.0/24 to any app openSSH
 ufw allow from 10.2.20.0/22 to any app openSSH
 ufw allow from 172.17.101.0/24 to any app Samba

@@ -1,0 +1,9 @@
+
+#Установка Docker
+curl https://get.docker.com/ > docker.sh 
+sudo bash docker.sh
+rm -f docker.sh
+
+
+
+sudo apt-get install network-manager-l2tp network-manager-l2tp-gnome
